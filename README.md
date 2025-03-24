@@ -8,3 +8,10 @@ In order to check whether the importing process was successful or not just execu
 We've added a bash script to install all dependencies if you have a UNIX system, to execute it do the following:
 - Give execution permition with `chmod +x dependencies.sh`
 - Execute the command with `./dependencies.sh`
+# Performance metrics
+The project is intended to be measured using the following metrics:
+- PSNR
+- MSE
+- STD
+- SSIM
+- FSIM
