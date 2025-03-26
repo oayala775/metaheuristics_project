@@ -18,46 +18,81 @@ class Maze:
         self.__best_length = None
 
 
-        self.x_length, self.y_length = maze.shape
-    
-    def set_maze(self, maze):
-        self.__maze = maze
-    
-    def get_maze(self):
-        return self.__maze
+        self.__x_length, self.__y_length = maze.shape
 
-    def set_start(self, start):
+    @property
+    def maze(self):
+        return self.__maze
+    
+    @maze.setter 
+    def maze(self, maze):
+        self.__maze = maze
+
+    @property
+    def start(self):
+        return self.__start
+    
+    @start.setter
+    def start(self, start):
         self.__start = start
     
-    def get_start(self):
-        return self.__start
+    @property
+    def goal(self):
+        return self.__goal
 
-    def set_goal(self, goal):
+    @goal.setter
+    def goal(self, goal):
         self.__goal = goal
     
-    def get_goal(self, ):
-        return self.__goal
+    @property
+    def best_path(self):
+        return self.__best_path
     
-    def set_best_path(self, path):
+    @best_path.setter
+    def best_path(self, path):
         self.__best_path = path
     
-    def get_best_path(self):
-        return self.__best_path
+    @property
+    def best_length(self):
+        return self.__best_length
 
-    def set_best_length(self, length):
+    @best_length.setter
+    def best_length(self, length):
         self.__best_length = length
     
-    def get_best_length(self):
-        return self.__best_length
+    @property
+    def ACO(self):
+        return self.__ACO
     
+    @ACO.setter
+    def ACO(self, aco):
+        self.__ACO = aco
+    
+    @property
+    def x_length(self):
+        return self.__x_length
+    
+    @x_length.setter
+    def x_length(self, x_len):
+        self.__x_length = x_len
+    
+    @property
+    def y_length(self):
+        return self.__y_length
+    
+    @y_length.setter
+    def y_length(self, y_len):
+        self.__y_length = y_len
+    
+
     def use_ACO(self):
-        path, length = self.__ACO.ant_colony()
-        self.set_best_length(length)
-        self.set_best_path(path)
+        path, length = self.ACO.ant_colony()
+        self.best_length=length
+        self.best_path=path
     
     def plot_maze(self):
         fig, ax = plt.subplots(figsize=(6, 6))
-        ax.imshow(self.get_maze(), cmap=self.cmap)
+        ax.imshow(self.maze, cmap=self.cmap)
 
         # Configurar cuadrícula más fina
         ax.set_xticks(np.arange(-0.5, self.y_length, 1), minor=True)
@@ -67,12 +102,12 @@ class Maze:
         ax.tick_params(which="both", bottom=False, left=False, 
                     labelbottom=False, labelleft=False)
         
-        if self.get_best_path():
-            x = [pos[1] for pos in self.get_best_path()]  # Columnas
-            y = [pos[0] for pos in self.get_best_path()]  # Filas
+        if self.best_path:
+            x = [pos[1] for pos in self.best_path]  # Columnas
+            y = [pos[0] for pos in self.best_path]  # Filas
             ax.plot(x, y, color='red', linewidth=2, marker='o', markersize=4, label='Camino óptimo')
-            ax.plot(self.get_goal()[1],self.get_goal()[0], marker='x', markersize=10, color='green', label='Objetivo')
-            ax.plot(self.get_start()[1],self.get_start()[0], marker='o', markersize=10, color='blue', label='Inicio')
+            ax.plot(self.goal[1],self.goal[0], marker='x', markersize=10, color='green', label='Objetivo')
+            ax.plot(self.start[1],self.start[0], marker='o', markersize=10, color='blue', label='Inicio')
             ax.legend()
 
         plt.title(f"Laberinto {self.x_length}x{self.y_length} - Celdas Pequeñas")
