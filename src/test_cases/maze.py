@@ -16,8 +16,8 @@ class Maze:
         self.__best_path = None
         self.__best_length = None
 
-        self.x_length = len(maze)
-        self.y_length = len(maze[0])
+
+        self.x_length, self.y_length = maze.shape
     
     def set_maze(self, maze):
         self.__maze = maze
@@ -59,8 +59,8 @@ class Maze:
         ax.imshow(self.get_maze(), cmap=self.cmap)
 
         # Configurar cuadrícula más fina
-        ax.set_xticks(np.arange(-0.5, 50, 1), minor=True)
-        ax.set_yticks(np.arange(-0.5, 20, 1), minor=True)
+        ax.set_xticks(np.arange(-0.5, self.y_length, 1), minor=True)
+        ax.set_yticks(np.arange(-0.5, self.x_length, 1), minor=True)
         ax.grid(which="minor", color="gray", linestyle='-', linewidth=0.5)
         ax.tick_params(which="minor", size=0)
         ax.tick_params(which="both", bottom=False, left=False, 
