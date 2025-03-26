@@ -13,7 +13,7 @@ class EnhancedACO():
         self.Q: int = 1
         
         self.best_path: list[tuple] = None
-        self.best_lenght: float = float('inf')
+        self.best_length: float = float('inf')
 
         self.grid: np.array = grid
         self.start: tuple = start
@@ -79,38 +79,38 @@ class EnhancedACO():
             return path
         return None
     
-    def path_lenght(self, path):
-        lenght = 0
+    def path_length(self, path):
+        length = 0
         for i in range(len(path) - 1):
-            lenght += self.euclidean_distance(path[i], path[i+1])
-        return lenght
+            length += self.euclidean_distance(path[i], path[i+1])
+        return length
     
     def ant_colony(self):
         pheromones = np.ones((self.grid.shape[0], self.grid.shape[1])) * 0.1
 
         for _ in range(self.n_iterations):
             paths = []
-            lenghts = [] 
+            lengths = [] 
 
             for _ in range(self.n_ants):
                 path = self.create_path(self.start, self.goal, pheromones)
                 if path:
-                    lenght = self.path_lenght(path)
+                    length = self.path_length(path)
                     paths.append(path)
-                    lenghts.append(lenght)
+                    lengths.append(length)
             
             if not paths:
                 continue
         
-            current_best_lenght = min(lenghts)
-            current_best_ant = lenghts.index(current_best_lenght)
+            current_best_length = min(lengths)
+            current_best_ant = lengths.index(current_best_length)
             current_best_path = paths[current_best_ant]
 
-            if current_best_lenght < self.best_lenght:
-                self.best_lenght = current_best_lenght
+            if current_best_length < self.best_length:
+                self.best_length = current_best_length
                 self.best_path = current_best_path
 
-            tau = (self.best_lenght - current_best_lenght) / self.best_lenght if self.best_lenght != float('inf') else 0
+            tau = (self.best_length - current_best_length) / self.best_length if self.best_length != float('inf') else 0
             pheromones = pheromones * (1 - self.rho)
 
             for i in range(len(current_best_path) - 1):
@@ -118,4 +118,4 @@ class EnhancedACO():
                 pheromones[x, y] += tau
                 pheromones[x, y] = max(pheromones[x,y], 0.01)
 
-        return self.best_path, self.best_lenght
+        return self.best_path, self.best_length
