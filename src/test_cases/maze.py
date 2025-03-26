@@ -13,7 +13,6 @@ class Maze:
         self.__start = start
         self.__goal = goal
 
-        self.__ACO = EnhancedACO(100, 100, maze, start, goal)
         self.__best_path = None
         self.__best_length = None
 
@@ -61,14 +60,6 @@ class Maze:
         self.__best_length = length
     
     @property
-    def ACO(self):
-        return self.__ACO
-    
-    @ACO.setter
-    def ACO(self, aco):
-        self.__ACO = aco
-    
-    @property
     def x_length(self):
         return self.__x_length
     
@@ -84,13 +75,10 @@ class Maze:
     def y_length(self, y_len):
         self.__y_length = y_len
     
-
-    def use_ACO(self):
-        path, length = self.ACO.ant_colony()
-        self.best_length=length
-        self.best_path=path
-    
     def plot_maze(self):
+        if not self.best_length and not self.best_path:
+            print("Best length or Best path are not defined")
+            return
         fig, ax = plt.subplots(figsize=(6, 6))
         ax.imshow(self.maze, cmap=self.cmap)
 
