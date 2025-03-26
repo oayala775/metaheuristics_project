@@ -50,8 +50,8 @@ class Maze:
         return self.__best_length
     
     def use_ACO(self):
-        path, lenght = self.__ACO.ant_colony()
-        self.set_best_length(lenght)
+        path, length = self.__ACO.ant_colony()
+        self.set_best_length(length)
         self.set_best_path(path)
     
     def plot_maze(self):
@@ -70,6 +70,8 @@ class Maze:
             x = [pos[1] for pos in self.get_best_path()]  # Columnas
             y = [pos[0] for pos in self.get_best_path()]  # Filas
             ax.plot(x, y, color='red', linewidth=2, marker='o', markersize=4, label='Camino óptimo')
+            ax.plot(self.get_goal()[0],self.get_goal()[1], marker='x', markersize=10, color='green', label='Objetivo')
+            ax.plot(self.get_start()[0],self.get_start()[1], marker='o', markersize=10, color='blue', label='Inicio')
             ax.legend()
 
         plt.title(f"Laberinto {self.x_length}x{self.y_length} - Celdas Pequeñas")
