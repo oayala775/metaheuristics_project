@@ -1,7 +1,7 @@
 import numpy as np
-import matplotlib.pyplot as plt
 from random import uniform
-from matplotlib.colors import ListedColormap
+from tools.euclidean_distance import euclidean_distance
+from tools.get_neighbors import get_neighbors
 
 class EnhancedACO():
     def __init__(self, n_ants: int, n_iterations: int, grid: np.ndarray, start: tuple, goal: tuple):
@@ -19,12 +19,9 @@ class EnhancedACO():
         self.start: tuple = start
         self.goal: tuple = goal
     
-    def euclidean_distance(self, pos1: tuple, pos2: tuple) -> float:
-        return np.sqrt((pos1[0] - pos2[0])**2 + (pos1[1] - pos2[1])**2)
-    
     def inspiration_function(self, current_node:tuple, next_node:tuple, goal:tuple):
-        distance_nodes = self.euclidean_distance(current_node, next_node)
-        distance_goal = self.euclidean_distance(next_node, goal)
+        distance_nodes = euclidean_distance(current_node, next_node)
+        distance_goal = euclidean_distance(next_node, goal)
         C1, C2 = uniform(0,1), uniform(0,1)
         return (C1 / distance_nodes) + (C2 / distance_goal) if distance_nodes > 0 and distance_goal > 0 else 1e-6
     
@@ -41,16 +38,7 @@ class EnhancedACO():
             return [1/len(valid_neighbors)] * len(valid_neighbors)
         else:
             return [probability / total for probability in probabilities]
-        
-    def get_neighbors(self, current_node: tuple) -> list[tuple]:
-        neighbors: list = []
-        for x, y in [(-1, 0), (1, 0), (0, -1), (0, 1), (-1, -1), (-1, 1), (1, -1), (1, 1)]:
-            neighbor_x, neighbor_y = current_node[0] + x, current_node[1] + y
-            if (0 <= neighbor_x < self.grid.shape[0] and 
-                0 <= neighbor_y < self.grid.shape[1] and 
-                self.grid[neighbor_x, neighbor_y] == 0):
-                neighbors.append((neighbor_x, neighbor_y))
-        return neighbors
+
     
     def create_path(self, start: tuple, goal: tuple, pheromones) -> list[tuple]:
         path = [start]
@@ -60,7 +48,7 @@ class EnhancedACO():
         steps = 0
 
         while current_node != goal and steps < max_steps:
-            node_neighbors = self.get_neighbors(current_node)
+            node_neighbors = get_neighbors(self.grid, current_node)
             if not node_neighbors:
                 return None
             valid_neighbors: list[tuple] = [n for n in node_neighbors if n not in visited_nodes]
@@ -82,7 +70,7 @@ class EnhancedACO():
     def path_length(self, path:list[tuple]) -> float:
         length = 0
         for i in range(len(path) - 1):
-            length += self.euclidean_distance(path[i], path[i+1])
+            length += euclidean_distance(path[i], path[i+1])
         return length
     
     def ant_colony(self):
