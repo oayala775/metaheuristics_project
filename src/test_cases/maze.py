@@ -1,3 +1,6 @@
+from algorithms.Enhanced_ACO import EnhancedACO
+from algorithms.PSO import generate_paths
+
 from matplotlib.colors import ListedColormap
 import matplotlib.pyplot as plt 
 import numpy as np
@@ -11,6 +14,9 @@ class Maze:
         self.__maze = maze
         self.__start = start
         self.__goal = goal
+
+        self.__ACO = EnhancedACO(100, 100, maze, start, goal)
+        #self.__PSO = generate_paths(maze, start, goal, num_paths=1000, max_path_length=60)
 
         self.__best_path = None
         self.__best_length = None
@@ -73,6 +79,16 @@ class Maze:
     @y_length.setter
     def y_length(self, y_len:int) -> None:
         self.__y_length = y_len
+
+    def use_ACO(self):
+        path, length = self.__ACO.ant_colony()
+        self.best_length = length
+        self.best_path = path
+
+    def use_PSO(self):
+        path, length = generate_paths(self.__maze, self.__start, self.__goal, num_paths=1000, max_path_length=60)
+        self.best_length = length
+        self.best_path = path
     
     def plot_maze(self) -> None:
         if not self.best_length and not self.best_path:
