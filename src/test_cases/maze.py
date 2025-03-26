@@ -20,65 +20,66 @@ class Maze:
         self.__x_length, self.__y_length = maze.shape
 
     @property
-    def maze(self):
+    def maze(self) -> np.ndarray:
         return self.__maze
     
     @maze.setter 
-    def maze(self, maze):
+    def maze(self, maze:np.ndarray) -> None:
         self.__maze = maze
 
     @property
-    def start(self):
+    def start(self) -> tuple:
         return self.__start
     
     @start.setter
-    def start(self, start):
+    def start(self, start:tuple) -> None:
         self.__start = start
     
     @property
-    def goal(self):
+    def goal(self) -> tuple:
         return self.__goal
 
     @goal.setter
-    def goal(self, goal):
+    def goal(self, goal:tuple) -> None:
         self.__goal = goal
     
     @property
-    def best_path(self):
+    def best_path(self) -> list[tuple]:
         return self.__best_path
     
     @best_path.setter
-    def best_path(self, path):
+    def best_path(self, path:list[tuple]) -> None:
         self.__best_path = path
     
     @property
-    def best_length(self):
+    def best_length(self) -> float:
         return self.__best_length
 
     @best_length.setter
-    def best_length(self, length):
+    def best_length(self, length:float) -> None:
         self.__best_length = length
     
     @property
-    def x_length(self):
+    def x_length(self) -> int:
         return self.__x_length
     
     @x_length.setter
-    def x_length(self, x_len):
+    def x_length(self, x_len:int) -> None:
         self.__x_length = x_len
     
     @property
-    def y_length(self):
+    def y_length(self) -> int:
         return self.__y_length
     
     @y_length.setter
-    def y_length(self, y_len):
+    def y_length(self, y_len:int) -> None:
         self.__y_length = y_len
     
-    def plot_maze(self):
+    def plot_maze(self) -> None:
         if not self.best_length and not self.best_path:
             print("Best length or Best path are not defined")
             return
+        
         fig, ax = plt.subplots(figsize=(6, 6))
         ax.imshow(self.maze, cmap=self.cmap)
 
