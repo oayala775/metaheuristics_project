@@ -1,5 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
 
 # Laberinto de 20x20
 maze1 = np.array([
