@@ -15,6 +15,9 @@ class Maze:
         self.__ACO = EnhancedACO(100, 100, maze, start, goal)
         self.__best_path = None
         self.__best_length = None
+
+        self.x_length = len(maze)
+        self.y_length = len(maze[0])
     
     def set_maze(self, maze):
         self.__maze = maze
@@ -69,6 +72,6 @@ class Maze:
             ax.plot(x, y, color='red', linewidth=2, marker='o', markersize=4, label='Camino óptimo')
             ax.legend()
 
-        plt.title("Laberinto 20x20 - Celdas Pequeñas")
+        plt.title(f"Laberinto {self.x_length}x{self.y_length} - Celdas Pequeñas")
         plt.tight_layout()  # Ajustar layout para que quede compacto
         plt.show()
