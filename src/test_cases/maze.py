@@ -5,7 +5,8 @@ import numpy as np
 
 
 class Maze:
-    def __init__(self, maze, start, goal):
+    def __init__(self, maze:np.ndarray, start: tuple, goal: tuple):
+        """Start and goal tuples must be in (y,x) form, in order for the code to work properly"""
         self.cmap = ListedColormap(['white', 'black'])
 
         self.__maze = maze
@@ -70,8 +71,8 @@ class Maze:
             x = [pos[1] for pos in self.get_best_path()]  # Columnas
             y = [pos[0] for pos in self.get_best_path()]  # Filas
             ax.plot(x, y, color='red', linewidth=2, marker='o', markersize=4, label='Camino óptimo')
-            ax.plot(self.get_goal()[0],self.get_goal()[1], marker='x', markersize=10, color='green', label='Objetivo')
-            ax.plot(self.get_start()[0],self.get_start()[1], marker='o', markersize=10, color='blue', label='Inicio')
+            ax.plot(self.get_goal()[1],self.get_goal()[0], marker='x', markersize=10, color='green', label='Objetivo')
+            ax.plot(self.get_start()[1],self.get_start()[0], marker='o', markersize=10, color='blue', label='Inicio')
             ax.legend()
 
         plt.title(f"Laberinto {self.x_length}x{self.y_length} - Celdas Pequeñas")
