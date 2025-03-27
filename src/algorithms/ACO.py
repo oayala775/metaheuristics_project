@@ -68,7 +68,7 @@ class ACO():
             lenght += euclidean_distance(path[i], path[i+1])
         return lenght
     
-    def start(self) -> tuple[list[tuple], float, int]:
+    def Start(self) -> tuple[list[tuple], float, int]:
         pheromones:list = np.ones((self.grid.shape[0], self.grid.shape[1])) * 0.1
         convergence_iteration: int = 0
 
