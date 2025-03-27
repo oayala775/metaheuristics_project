@@ -75,7 +75,9 @@ class Maze:
     def y_length(self, y_len):
         self.__y_length = y_len
     
+    # def plot_maze(self):
     def plot_maze(self, best_path):
+        # if not self.best_length and not self.best_path:
         if not best_path:
             print("Best length or Best path are not defined")
             return
@@ -90,9 +92,12 @@ class Maze:
         ax.tick_params(which="both", bottom=False, left=False, 
                     labelbottom=False, labelleft=False)
         
-        if best_path:
+        if self.best_path:
+            # x = [pos[1] for pos in self.best_path]  # Columnas
+            # y = [pos[0] for pos in self.best_path]  # Filas
             x = [pos[1] for pos in best_path]  # Columnas
             y = [pos[0] for pos in best_path]  # Filas
+
             ax.plot(x, y, color='red', linewidth=2, marker='o', markersize=4, label='Camino óptimo')
             ax.plot(self.goal[1],self.goal[0], marker='x', markersize=10, color='green', label='Objetivo')
             ax.plot(self.start[1],self.start[0], marker='o', markersize=10, color='blue', label='Inicio')
