@@ -8,8 +8,8 @@ class EnhancedACO():
         self.n_ants: int = n_ants
         self.n_iterations: int = n_iterations
         self.alpha: int = 1
-        self.beta: int  = 5
-        self.rho: float = 0.5
+        self.beta: int  = 2
+        self.rho: float = 0.1
         self.Q: int = 1
         
         self.best_path: list[tuple] = None
@@ -31,7 +31,7 @@ class EnhancedACO():
         for n in valid_neighbors:
             tau = pheromones[n[0], n[1]]
             eta = self.inspiration_function(current_node, n, goal)
-            probability = (tau ** eta) * (eta ** self.beta)
+            probability = (tau ** self.alpha) * (eta ** self.beta)
             probabilities.append(probability)
             total += probability
         if total == 0:
@@ -73,10 +73,11 @@ class EnhancedACO():
             length += euclidean_distance(path[i], path[i+1])
         return length
     
-    def ant_colony(self):
+    def start(self) -> tuple[list[tuple], float, int]:
         pheromones:list = np.ones((self.grid.shape[0], self.grid.shape[1])) * 0.1
+        convergence_iteration: int = 0
 
-        for _ in range(self.n_iterations):
+        for iteration in range(self.n_iterations):
             paths = []
             lengths = [] 
 
@@ -97,13 +98,17 @@ class EnhancedACO():
             if current_best_length < self.best_length:
                 self.best_length = current_best_length
                 self.best_path = current_best_path
+                convergence_iteration = iteration + 1
 
             tau = (self.best_length - current_best_length) / self.best_length if self.best_length != float('inf') else 0
             pheromones = pheromones * (1 - self.rho)
 
             for i in range(len(current_best_path) - 1):
-                x, y = current_best_path[i]
-                pheromones[x, y] += tau
-                pheromones[x, y] = max(pheromones[x,y], 0.01)
+                x1, y1 = current_best_path[i]
+                x2, y2 = current_best_path[i + 1]
+                pheromones[x1, y1] += tau
+                pheromones[x2, y2] += tau
+                pheromones[x1, y1] = max(pheromones[x1, y1], 0.01)
+                pheromones[x2, y2] = max(pheromones[x2, y2], 0.01)
 
-        return self.best_path, self.best_length
+        return self.best_path, self.best_length, convergence_iteration

@@ -1,5 +1,4 @@
 import numpy as np
-from random import uniform
 from tools.euclidean_distance import euclidean_distance
 from tools.get_neighbors import get_neighbors
 
@@ -69,10 +68,11 @@ class ACO():
             lenght += euclidean_distance(path[i], path[i+1])
         return lenght
     
-    def ant_colony(self):
+    def start(self) -> tuple[list[tuple], float, int]:
         pheromones:list = np.ones((self.grid.shape[0], self.grid.shape[1])) * 0.1
+        convergence_iteration: int = 0
 
-        for _ in range(self.n_iterations):
+        for iteration in range(self.n_iterations):
             paths = []
             lengths = [] 
 
@@ -93,6 +93,7 @@ class ACO():
             if current_best_length < self.best_length:
                 self.best_length = current_best_length
                 self.best_path = current_best_path
+                convergence_iteration = iteration + 1
 
             pheromones = pheromones * (1 - self.rho)
             for path, lenght in zip(paths, lengths):
@@ -104,4 +105,4 @@ class ACO():
                     pheromones[x1, y1] = max(pheromones[x1, y1], 0.01)
                     pheromones[x2, y2] = max(pheromones[x2, y2], 0.01)
 
-        return self.best_path, self.best_length
+        return self.best_path, self.best_length, convergence_iteration
