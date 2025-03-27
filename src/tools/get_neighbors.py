@@ -1,5 +1,6 @@
+import numpy as np
 
-def get_neighbors(grid, current_node: tuple) -> list[tuple]:
+def get_neighbors(grid: np.array, current_node: tuple) -> list[tuple]:
     """
         Obtiene los nodos permitidos donde se puede mover el algoritmo
     """
