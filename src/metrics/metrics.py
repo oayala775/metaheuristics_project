@@ -10,7 +10,7 @@ class Metrics:
 
     def evaluate_algorithm(self, algorithm, algorithm_name: str, plot_grid: Maze = None) -> None:
         time_start: float = time()
-        best_path, best_lenght, convergence_iteration, all_lenghts = algorithm.Start()
+        best_path, best_lenght, convergence_iteration, all_lenghts = algorithm.optimize()
         time_end: float = time()
         duration: float = time_end - time_start
 
@@ -23,5 +23,5 @@ class Metrics:
 
         if plot_grid != None:
             plot_grid.best_path, plot_grid.best_length = best_path, best_lenght
-            plot_grid.plot_maze()
+            plot_grid.plot_maze(algorithm_name)
 
