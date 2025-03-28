@@ -112,6 +112,8 @@ class ArtificialBeeColony:
     def optimize(self):
         best_path: tuple = None
         # self.best_bee: float = float('inf')
+        best_lengths:list[float] = []
+        best_iter: int = 0
 
         positions = []
         for _ in range(self.num_bees):
@@ -123,6 +125,8 @@ class ArtificialBeeColony:
                     length = self.path_length(positions[i])
                     if length < self.best_bee:
                         self.best_bee = length
+                        best_lengths.append(self.best_bee)
+                        best_iter = iteration
                         best_path = positions
 
                 new_path = self.create_path(self.start, self.goal)
@@ -131,6 +135,8 @@ class ArtificialBeeColony:
                     if positions[i] is None:
                         if new_length < self.best_bee:
                             self.best_bee = new_length
+                            best_lengths.append(self.best_bee)
+                            best_iter = iteration
                         positions[i] = new_path
                         
                         
@@ -141,6 +147,9 @@ class ArtificialBeeColony:
                         new_length = len(new_path)
                         if new_length < self.best_bee:
                             self.best_bee = new_length
+                            best_iter = iteration
                             best_path = new_path
 
-        return best_path, self.best_bee
+            
+
+        return best_path, self.best_bee, best_iter, best_lengths
