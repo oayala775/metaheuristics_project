@@ -68,7 +68,7 @@ class ACO():
             lenght += euclidean_distance(path[i], path[i+1])
         return lenght
     
-    def Start(self) -> tuple[list[tuple], float, int]:
+    def optimize(self) -> tuple[list[tuple], float, int]:
         best_lenghts: list[float] = []
         pheromones:list = np.ones((self.grid.shape[0], self.grid.shape[1])) * 0.1
         convergence_iteration: int = 0
@@ -108,3 +108,4 @@ class ACO():
                     pheromones[x2, y2] = max(pheromones[x2, y2], 0.01)
 
         return self.best_path, self.best_length, convergence_iteration, best_lenghts
+        # return self.best_path, self.best_length, best_lenghts
