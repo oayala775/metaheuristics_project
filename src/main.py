@@ -12,7 +12,7 @@ def main():
     ]
 
     for algorithm in algorithms:
-        metrics.evaluate_algorithms(algorithm[0], algorithm[1], grid)    
+        metrics.evaluate_algorithm(algorithm[0], algorithm[1], grid)    
 
 if __name__ == "__main__":
     main()
