@@ -1,6 +1,7 @@
 from test_cases.mazes import mazes
 from algorithms.Enhanced_ACO import EnhancedACO as EACO
 from algorithms.ACO import ACO
+from algorithms.ABC import ArtificialBeeColony as ABC
 from metrics.metrics import Metrics
 
 def main():
@@ -9,6 +10,7 @@ def main():
     algorithms = [
         (ACO(grid.maze, grid.start, grid.goal), "ACO"),
         (EACO(grid.maze, grid.start, grid.goal), "EACO"), 
+        (ABC(grid.maze, grid.start, grid.goal), "ABC"),
     ]
 
     for algorithm in algorithms:
