@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import random
 from collections import defaultdict
 
+
 class Particle:
     def __init__(self, maze, start, goal, max_path_length):
         self.maze = np.array(maze)
@@ -122,50 +123,74 @@ class Particle:
                 self.maze[pos] == 0)
 
 
+class PSO():
 
-def generate_paths(maze, start, goal, num_paths=10, max_path_length=60):
-    """Genera caminos válidos y retorna el mejor camino y su longitud"""
-    paths = []
-    attempts = 0
-    max_attempts = num_paths * 10
+    def __init__(self, grid: np.ndarray, start: tuple, goal: tuple):
+        self.grid = grid
+        self.start = start
+        self.goal = goal
+
+        self.num_paths = 100
+        self.max_path_length = 100
     
-    while len(paths) < num_paths and attempts < max_attempts:
-        attempts += 1
-        p = Particle(maze, start, goal, max_path_length)
-        if p.path[-1] == goal:
-            path_tuple = tuple(p.path)
-            unique = True
-            for existing in paths:
-                if tuple(existing) == path_tuple:
-                    unique = False
-                    break
-            if unique:
-                paths.append(p.path)
-    
-    if paths:
-        optimal_path = min(paths, key=lambda x: len(x))
-        return optimal_path, len(optimal_path)
-    else:
-        return None, 0
+
+    def Start(self):
+        """Genera caminos válidos y retorna el mejor camino y su longitud"""
+        paths = []
+        lengths = []
+        attempts = 0
+        convergence_iteration = None
+        max_attempts = self.num_paths * 10
+        
+        while len(paths) < self.num_paths and attempts < max_attempts:
+            attempts += 1
+            p = Particle(self.grid, self.start, self.goal, self.max_path_length)
+            if p.path[-1] == self.goal:
+                path_tuple = tuple(p.path)
+                unique = True
+                for existing in paths:
+                    if tuple(existing) == path_tuple:
+                        unique = False
+                        break
+                if unique:
+                    paths.append(p.path)
+                    lengths.append(len(p.path))
+
+                    # Si es el primer camino válido, registramos la iteración de convergencia
+                    if convergence_iteration is None:
+                        convergence_iteration = attempts
+                
+        
+        if paths:
+            optimal_path = min(paths, key=lambda x: len(x))
+            return optimal_path, len(optimal_path), convergence_iteration, lengths
+        else:
+            return None, 0
+
+
+
+
+
 
 # Laberinto
-maze = [
-    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-    [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-    [1,0,1,1,1,1,1,0,0,0,0,1,0,0,1,1,1,0,0,1],
-    [1,0,1,0,0,0,1,0,1,1,1,1,0,1,0,0,0,0,0,1],
-    [1,0,1,1,0,1,0,0,0,0,0,1,1,1,1,0,1,0,0,1],
-    [1,0,0,0,0,1,1,0,1,1,0,1,0,0,1,0,0,1,0,1],
-    [1,0,1,1,0,0,0,1,0,1,1,0,1,1,0,0,1,0,1,1],
-    [1,0,1,0,1,1,1,1,0,0,1,0,0,0,0,0,0,0,0,1],
-    [1,0,1,1,1,0,0,1,1,0,1,1,1,1,1,1,1,0,0,1],
-    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
-]
+# maze = [
+#     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+#     [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+#     [1,0,1,1,1,1,1,0,0,0,0,1,0,0,1,1,1,0,0,1],
+#     [1,0,1,0,0,0,1,0,1,1,1,1,0,1,0,0,0,0,0,1],
+#     [1,0,1,1,0,1,0,0,0,0,0,1,1,1,1,0,1,0,0,1],
+#     [1,0,0,0,0,1,1,0,1,1,0,1,0,0,1,0,0,1,0,1],
+#     [1,0,1,1,0,0,0,1,0,1,1,0,1,1,0,0,1,0,1,1],
+#     [1,0,1,0,1,1,1,1,0,0,1,0,0,0,0,0,0,0,0,1],
+#     [1,0,1,1,1,0,0,1,1,0,1,1,1,1,1,1,1,0,0,1],
+#     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+# ]
 
-start = (1, 1)
-goal = (8, 18)
+# start = (1, 1)
+# goal = (8, 18)
 
-# Obtener el mejor camino y su longitud
-best_path, best_length = generate_paths(maze, start, goal, num_paths=1000, max_path_length=60)
 
-print(best_length, best_path)
+# # Obtener el mejor camino y su longitud
+# best_path, best_length = PSO.generate_paths(maze, start, goal, num_paths=1000, max_path_length=60)
+
+# print(best_length, best_path)
