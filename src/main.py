@@ -14,13 +14,7 @@ def main():
     for algorithm in algorithms:
         metrics.evaluate_algorithm(algorithm[0], algorithm[1], grid)
 
-    # best_path, best_lenght, convergence_iteration = algorithm.Start()
-    # grid.best_path, grid.best_length = best_path, best_lenght
-    
-    # print(f"Se llegó a la convergencia en la iteración: {convergence_iteration}")
-    # print(f"La distancia hecha es de: {best_lenght} unidades")
-    # grid.plot_maze()
-
+# from test_cases.mazes import mazes
 # from test_cases.maze import Maze
 # from algorithms.ABC import ArtificialBeeColony as ABC
 # from algorithms.ACO import ACO
