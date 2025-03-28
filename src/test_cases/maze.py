@@ -74,7 +74,7 @@ class Maze:
     def y_length(self, y_len:int) -> None:
         self.__y_length = y_len
     
-    def plot_maze(self) -> None:
+    def plot_maze(self, algorithm_name: str) -> None:
         if not self.best_length and not self.best_path:
             print("Best length or Best path are not defined")
             return
@@ -99,6 +99,6 @@ class Maze:
             ax.plot(self.start[1],self.start[0], marker='o', markersize=10, color='blue', label='Inicio')
             ax.legend()
 
-        plt.title(f"Laberinto {self.x_length}x{self.y_length} - Celdas Pequeñas")
+        plt.title(f"Algoritmo: {algorithm_name} \nLaberinto {self.x_length}x{self.y_length} - Celdas Pequeñas")
         plt.tight_layout()  # Ajustar layout para que quede compacto
         plt.show()
