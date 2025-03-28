@@ -3,12 +3,12 @@ from tools.euclidean_distance import euclidean_distance
 from tools.get_neighbors import get_neighbors
 
 class ACO():
-    def __init__(self, n_ants: int, n_iterations: int, grid: np.array, start: tuple, goal: tuple):
-        self.n_ants: int = n_ants
-        self.n_iterations: int = n_iterations
+    def __init__(self, grid: np.array, start: tuple, goal: tuple):
+        self.n_ants: int = 50
+        self.n_iterations: int = 150
         self.alpha: int = 1
         self.beta: int  = 5
-        self.rho: float = 0.5
+        self.rho: float = 0.8
         self.Q: int = 100
         
         self.best_path: list[tuple] = None
@@ -69,6 +69,7 @@ class ACO():
         return lenght
     
     def Start(self) -> tuple[list[tuple], float, int]:
+        best_lenghts: list[float] = []
         pheromones:list = np.ones((self.grid.shape[0], self.grid.shape[1])) * 0.1
         convergence_iteration: int = 0
 
@@ -87,6 +88,7 @@ class ACO():
                 continue
         
             current_best_length = min(lengths)
+            best_lenghts.append(current_best_length)
             current_best_ant = lengths.index(current_best_length)
             current_best_path = paths[current_best_ant]
 
@@ -105,4 +107,4 @@ class ACO():
                     pheromones[x1, y1] = max(pheromones[x1, y1], 0.01)
                     pheromones[x2, y2] = max(pheromones[x2, y2], 0.01)
 
-        return self.best_path, self.best_length, convergence_iteration
+        return self.best_path, self.best_length, convergence_iteration, best_lenghts
