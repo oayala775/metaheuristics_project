@@ -66,7 +66,7 @@ class Algorithm(ABC):
             return path
         return None
 
-    @abstractmethod
+    # @abstractmethod
     def optimize() -> tuple[list[tuple], float, int]:
         pass
 
