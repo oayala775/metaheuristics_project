@@ -13,7 +13,7 @@ def main():
     algorithms = [
         (ACO(grid.maze, grid.start, grid.goal), "ACO"),
         (EACO(grid.maze, grid.start, grid.goal), "EACO"),
-        (PSO(grid.maze, grid.start, grid.goal), "PSO")
+        (PSO(grid.maze, grid.start, grid.goal), "PSO"),
         (ABC(grid.maze, grid.start, grid.goal), "ABC"),
     ]
 
