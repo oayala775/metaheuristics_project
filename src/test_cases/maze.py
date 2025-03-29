@@ -1,6 +1,7 @@
 from matplotlib.colors import ListedColormap
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 
 
 class Maze:
@@ -16,6 +17,7 @@ class Maze:
         self.__best_length = None
 
         self.__x_length, self.__y_length = maze.shape
+        self.__file_path = "your_route_to_results/plots"
 
     @property
     def maze(self) -> np.ndarray:
@@ -73,7 +75,18 @@ class Maze:
     def y_length(self, y_len: int) -> None:
         self.__y_length = y_len
 
-    def plot_maze(self, algorithm_name: str) -> None:
+    @property
+    def file_path(self) -> str:
+        return self.__file_path
+    
+    @file_path.setter
+    def file_path(self, path:str) -> None:
+        self.__file_path = path
+
+    def plot_maze(self, algorithm_name: str, maze_number: int) -> None:
+        colors_dict = {"ACO": 'red', "EACO": 'blue',
+                       "ABC": 'magenta', "PSO": 'green'}
+
         if not self.best_length and not self.best_path:
             print("Best length or Best path are not defined")
             return
@@ -88,20 +101,20 @@ class Maze:
         ax.tick_params(which="minor", size=0)
         ax.tick_params(which="both", bottom=False, left=False,
                        labelbottom=False, labelleft=False)
-
         if self.best_path:
             x = [pos[1] for pos in self.best_path]  # Columnas
             y = [pos[0] for pos in self.best_path]  # Filas
 
-            ax.plot(x, y, color='red', linewidth=2, marker='o',
-                    markersize=4, label='Camino óptimo')
+            ax.plot(x, y, color=colors_dict[algorithm_name], linewidth=2, marker='o',
+                    markersize=4, label=f'Camino óptimo: {algorithm_name}')
+            filename = f"{algorithm_name}_{maze_number}.eps"
+            filename = os.path.join(self.__file_path, filename)
+            plt.title(
+                f"Laberinto {self.x_length}x{self.y_length} - Celdas Pequeñas")
             ax.plot(self.goal[1], self.goal[0], marker='x',
                     markersize=10, color='green', label='Objetivo')
             ax.plot(self.start[1], self.start[0], marker='o',
                     markersize=10, color='blue', label='Inicio')
             ax.legend()
-
-        plt.title(
-            f"Algoritmo: {algorithm_name} \nLaberinto {self.x_length}x{self.y_length} - Celdas Pequeñas")
-        plt.tight_layout()  # Ajustar layout para que quede compacto
-        plt.show()
+            plt.tight_layout()  # Ajustar layout para que quede compacto
+            plt.savefig(filename)
