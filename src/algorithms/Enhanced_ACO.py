@@ -1,31 +1,28 @@
 import numpy as np
 from random import uniform
-from tools.euclidean_distance import euclidean_distance
-from tools.get_neighbors import get_neighbors
+from algorithms.Algorithm import Algorithm
 
-class EnhancedACO():
+
+class EnhancedACO(Algorithm):
     def __init__(self, grid: np.ndarray, start: tuple, goal: tuple):
+        super().__init__(grid, start, goal)
         self.n_ants: int = 50
         self.n_iterations: int = 150
         self.alpha: int = 1
-        self.beta: int  = 5
+        self.beta: int = 5
         self.rho: float = 0.8
         self.Q: int = 1
-        
+
         self.best_path: list[tuple] = None
         self.best_length: float = float('inf')
 
-        self.grid: np.ndarray = grid
-        self.start: tuple = start
-        self.goal: tuple = goal
-    
-    def inspiration_function(self, current_node:tuple, next_node:tuple, goal:tuple):
-        distance_nodes = euclidean_distance(current_node, next_node)
-        distance_goal = euclidean_distance(next_node, goal)
-        C1, C2 = uniform(0,1), uniform(0,1)
+    def inspiration_function(self, current_node: tuple, next_node: tuple, goal: tuple):
+        distance_nodes = self.euclidean_distance(current_node, next_node)
+        distance_goal = self.euclidean_distance(next_node, goal)
+        C1, C2 = uniform(0, 1), uniform(0, 1)
         return (C1 / distance_nodes) + (C2 / distance_goal) if distance_nodes > 0 and distance_goal > 0 else 1e-6
-    
-    def transition_probabilities(self, current_node:tuple, valid_neighbors:list[tuple], goal:tuple, pheromones:list) -> list[float]:
+
+    def transition_probabilities(self, current_node: tuple, valid_neighbors: list[tuple], goal: tuple, pheromones: list) -> list[float]:
         probabilities = []
         total = 0
         for n in valid_neighbors:
@@ -39,7 +36,6 @@ class EnhancedACO():
         else:
             return [probability / total for probability in probabilities]
 
-    
     def create_path(self, start: tuple, goal: tuple, pheromones) -> list[tuple]:
         path = [start]
         visited_nodes = set([start])
@@ -48,14 +44,16 @@ class EnhancedACO():
         steps = 0
 
         while current_node != goal and steps < max_steps:
-            node_neighbors = get_neighbors(self.grid, current_node)
+            node_neighbors = self.get_neighbors(current_node)
             if not node_neighbors:
                 return None
-            valid_neighbors: list[tuple] = [n for n in node_neighbors if n not in visited_nodes]
+            valid_neighbors: list[tuple] = [
+                n for n in node_neighbors if n not in visited_nodes]
             if not valid_neighbors:
                 return None
-            
-            probabilities = self.transition_probabilities(current_node, valid_neighbors, goal, pheromones)
+
+            probabilities = self.transition_probabilities(
+                current_node, valid_neighbors, goal, pheromones)
             next_node = np.random.choice(len(valid_neighbors), p=probabilities)
             current_node = valid_neighbors[next_node]
 
@@ -66,21 +64,16 @@ class EnhancedACO():
         if current_node == goal:
             return path
         return None
-    
-    def path_length(self, path:list[tuple]) -> float:
-        length = 0
-        for i in range(len(path) - 1):
-            length += euclidean_distance(path[i], path[i+1])
-        return length
-    
-    def Start(self) -> tuple[list[tuple], float, int]:
+
+    def optimize(self) -> tuple[list[tuple], float, int]:
         best_lenghts: list[float] = []
-        pheromones:list = np.ones((self.grid.shape[0], self.grid.shape[1])) * 0.1
+        pheromones: list = np.ones(
+            (self.grid.shape[0], self.grid.shape[1])) * 0.1
         convergence_iteration: int = 0
 
         for iteration in range(self.n_iterations):
             paths = []
-            lengths = [] 
+            lengths = []
 
             for _ in range(self.n_ants):
                 path = self.create_path(self.start, self.goal, pheromones)
@@ -88,7 +81,7 @@ class EnhancedACO():
                     length = self.path_length(path)
                     paths.append(path)
                     lengths.append(length)
-            
+
             if not paths:
                 continue
 
@@ -102,7 +95,8 @@ class EnhancedACO():
                 self.best_path = current_best_path
                 convergence_iteration = iteration + 1
 
-            tau = (self.best_length - current_best_length) / self.best_length if self.best_length != float('inf') else 0
+            tau = (self.best_length - current_best_length) / \
+                self.best_length if self.best_length != float('inf') else 0
             pheromones = pheromones * (1 - self.rho)
 
             for i in range(len(current_best_path) - 1):
