@@ -17,7 +17,7 @@ class Maze:
         self.__best_length = None
 
         self.__x_length, self.__y_length = maze.shape
-        self.__file_path = "your_route_to_results/plots"
+        self.__file_path = "/Users/ruben/Documents"
 
     @property
     def maze(self) -> np.ndarray:

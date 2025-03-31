@@ -14,7 +14,7 @@ import os
 class Metrics:
 
     def __init__(self):
-        self.__csv_path = "your_route_to_results/csv"
+        self.__csv_path = "/Users/ruben/Documents"
 
     @property
     def csv_path(self) -> str:
