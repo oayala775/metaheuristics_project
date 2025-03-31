@@ -15,8 +15,8 @@ from test_cases.mazes import mazes
 class Metrics:
 
     def __init__(self):
-        self.__csv_path = "/home/someuserpc/Documents/metaheuristics_project/src/metrics/results/csv/metrics.csv"
-        self.__table_path = "/home/someuserpc/Documents/metaheuristics_project/src/metrics/results/tables/"
+        self.__csv_path = "yout_path_to csv/metrics.csv"
+        self.__table_path = "your_path_to results/tables/"
 
     @property
     def csv_path(self) -> str:

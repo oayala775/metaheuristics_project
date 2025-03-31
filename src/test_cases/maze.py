@@ -17,7 +17,7 @@ class Maze:
         self.__best_length = None
 
         self.__x_length, self.__y_length = maze.shape
-        self.__file_path = "/home/someuserpc/Documents/metaheuristics_project/src/metrics/results/plots/"
+        self.__file_path = "your_path_to results/plots/"
 
     @property
     def maze(self) -> np.ndarray:
