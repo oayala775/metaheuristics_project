@@ -17,7 +17,7 @@ class Maze:
         self.__best_length = None
 
         self.__x_length, self.__y_length = maze.shape
-        self.__file_path = "/Users/ruben/Documents"
+        self.__file_path = "your_path_to results/plots/"
 
     @property
     def maze(self) -> np.ndarray:
@@ -78,9 +78,9 @@ class Maze:
     @property
     def file_path(self) -> str:
         return self.__file_path
-    
+
     @file_path.setter
-    def file_path(self, path:str) -> None:
+    def file_path(self, path: str) -> None:
         self.__file_path = path
 
     def plot_maze(self, algorithm_name: str, maze_number: int) -> None:
@@ -107,7 +107,7 @@ class Maze:
 
             ax.plot(x, y, color=colors_dict[algorithm_name], linewidth=2, marker='o',
                     markersize=4, label=f'Camino óptimo: {algorithm_name}')
-            filename = f"{algorithm_name}_{maze_number}.eps"
+            filename = f"{algorithm_name}_{maze_number}.jpg"
             filename = os.path.join(self.__file_path, filename)
             plt.title(
                 f"Laberinto {self.x_length}x{self.y_length} - Celdas Pequeñas")
