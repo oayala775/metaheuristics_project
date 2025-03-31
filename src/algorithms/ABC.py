@@ -1,5 +1,5 @@
-from algorithms.Algorithm import Algorithm
 import numpy as np
+from algorithms.Algorithm import Algorithm
 
 
 class ArtificialBeeColony(Algorithm):
@@ -48,16 +48,17 @@ class ArtificialBeeColony(Algorithm):
 
     def optimize(self):
         best_path: tuple = None
-        # self.best_bee: float = float('inf')
         best_lengths: list[float] = []
         best_iter: int = 0
 
         positions = []
         for _ in range(self.num_bees):
-            positions.append(self.create_path(self.start, self.goal))
+            temporary_path = self.create_path(self.start, self.goal)
+            if temporary_path is not None:
+                positions.append(temporary_path)
 
         for iteration in range(self.max_iter):
-            for i in range(self.num_bees):
+            for i in range(len(positions)):
                 if positions[i] is not None:
                     length = self.path_length(positions[i])
                     if length < self.best_bee:
@@ -83,6 +84,7 @@ class ArtificialBeeColony(Algorithm):
                         new_length = len(new_path)
                         if new_length < self.best_bee:
                             self.best_bee = new_length
+                            best_lengths.append(self.best_bee)
                             best_iter = iteration
                             best_path = new_path
 

@@ -114,7 +114,7 @@ class PSO(Algorithm):
     def __init__(self, grid: np.ndarray, start: tuple, goal: tuple):
         super().__init__(grid, start, goal)
 
-        self.num_paths = 100
+        self.num_paths = 200
         self.max_path_length = 100
 
     def optimize(self):
@@ -123,7 +123,7 @@ class PSO(Algorithm):
         lengths = []
         attempts = 0
         convergence_iteration = None
-        max_attempts = self.num_paths * 10
+        max_attempts = self.num_paths * 20
 
         while len(paths) < self.num_paths and attempts < max_attempts:
             attempts += 1
@@ -148,4 +148,4 @@ class PSO(Algorithm):
             optimal_path = min(paths, key=lambda x: len(x))
             return optimal_path, len(optimal_path), convergence_iteration, lengths
         else:
-            return None, 0
+            return 0,0,0,0
